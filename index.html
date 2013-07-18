@@ -37,7 +37,7 @@
     <script>
       (function($) {
         ping = function() {
-          $.get("/ping.txt?" + new Date().getTime())
+          $.ajax("/ping.txt?" + new Date().getTime(), { timeout: 3000 })
             .done(function() { $('body').removeClass("down").addClass("up"); })
             .fail(function() { $('body').removeClass("up").addClass("down"); })
             .always(function() { setTimeout(ping, 1000); });
