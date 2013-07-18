@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Is My Internet Connection Still Up?</title>
+    <meta name="description" content="My internet connection used to work. Is it still up?">
+    <meta name="viewport" content="width=device-width">
+    <style>
+      html, body { text-align: center; font-family: sans-serif; text-transform: uppercase; height: 100%; }
+      .content { display: table; height: 100%; width: 100%; }
+      .cell { display: table-cell; vertical-align: middle; text-align: center; }
+
+      h1 { font-size: 2em; }
+      h2 { font-size: 15em; line-height: 0.1em; }
+
+      body.up { background-color: #393; color: #262; }
+      body.up h2 { color: #282; }
+      body.up h2#down { display: none !important; visibility: hidden; }
+
+      body.down { background-color: #C33; color: #922; }
+      body.down h2 { color: #B22; }
+      body.down h2#up { display: none !important; visibility: hidden; }
+    </style>
+  </head>
+
+  <body class="up">
+    <div class="content">
+      <div class="cell">
+        <h1>Is my internet connection still up?</h1>
+        <h2 id="up">Yes</h2>
+        <h2 id="down">No</h2>
+      </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script>
+      (function($) {
+        ping = function() {
+          $.get("/ping.txt?" + new Date().getTime())
+            .done(function() { $('body').removeClass("down").addClass("up"); })
+            .fail(function() { $('body').removeClass("up").addClass("down"); })
+            .always(function() { setTimeout(ping, 1000); });
+        };
+        ping();
+      })(jQuery);
+    </script>
+  </body>
+</html>
